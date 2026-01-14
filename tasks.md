@@ -49,8 +49,8 @@
 - [x] Cambio de contraseña
 
 ### 7. Reportes
-- [ ] Página de reportes con filtros
-- [ ] Exportar reportes a PDF/Excel
+- [x] Página de reportes con filtros
+- [x] Exportar reportes a PDF/Excel
 
 ### 8. UI/UX
 - [ ] Diseño responsivo con Tailwind
