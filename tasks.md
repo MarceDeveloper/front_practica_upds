@@ -43,10 +43,10 @@
 - [x] Funcionalidad de cancelar reserva
 
 ### 6. Gestión de Usuarios (Admin)
-- [ ] Página de listado de usuarios
-- [ ] Formulario de edición de usuarios
-- [ ] Funcionalidad de eliminación de usuarios
-- [ ] Cambio de contraseña
+- [x] Página de listado de usuarios
+- [x] Formulario de edición de usuarios
+- [x] Funcionalidad de eliminación de usuarios
+- [x] Cambio de contraseña
 
 ### 7. Reportes
 - [ ] Página de reportes con filtros
