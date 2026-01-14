@@ -68,34 +68,41 @@ export default function EspaciosPage() {
 
   return (
     <div className="px-4 py-6 sm:px-0">
-      <div className="flex justify-between items-center mb-6">
-        <h1 className="text-3xl font-bold text-gray-900">Espacios</h1>
+      <div className="flex justify-between items-center mb-8">
+        <div>
+          <h1 className="text-4xl font-bold text-gray-900 mb-2">Gestión de Espacios</h1>
+          <p className="text-gray-600">Administra y reserva espacios disponibles en el sistema</p>
+        </div>
         {isAdmin && (
           <button
             onClick={handleCrear}
-            className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-md"
+            className="bg-indigo-600 hover:bg-indigo-700 text-white px-6 py-3 rounded-lg font-medium shadow-lg hover:shadow-xl transition-all duration-200 flex items-center"
           >
-            Crear Espacio
+            <span className="mr-2">➕</span>
+            Crear Nuevo Espacio
           </button>
         )}
       </div>
 
       {/* Filtros */}
-      <div className="bg-white shadow rounded-lg p-6 mb-6">
-        <h2 className="text-lg font-medium text-gray-900 mb-4">Filtros</h2>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+      <div className="bg-white shadow-lg rounded-xl p-6 mb-8 border border-gray-100">
+        <h2 className="text-xl font-semibold text-gray-900 mb-6 flex items-center">
+          <span className="mr-2">🔍</span>
+          Filtros de Búsqueda
+        </h2>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
           <div>
-            <label htmlFor="tipo" className="block text-sm font-medium text-gray-700">
-              Tipo
+            <label htmlFor="tipo" className="block text-sm font-medium text-gray-700 mb-2">
+              Tipo de Espacio
             </label>
             <select
               id="tipo"
               name="tipo"
               value={filtros.tipo}
               onChange={handleFiltroChange}
-              className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
+              className="block w-full rounded-lg border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 transition-colors"
             >
-              <option value="">Todos</option>
+              <option value="">Todos los tipos</option>
               <option value="aula">Aula</option>
               <option value="laboratorio">Laboratorio</option>
               <option value="auditorio">Auditorio</option>
@@ -103,8 +110,8 @@ export default function EspaciosPage() {
             </select>
           </div>
           <div>
-            <label htmlFor="capacidadMin" className="block text-sm font-medium text-gray-700">
-              Capacidad mínima
+            <label htmlFor="capacidadMin" className="block text-sm font-medium text-gray-700 mb-2">
+              Capacidad Mínima
             </label>
             <input
               type="number"
@@ -112,12 +119,13 @@ export default function EspaciosPage() {
               name="capacidadMin"
               value={filtros.capacidadMin || ''}
               onChange={handleFiltroChange}
-              className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
+              placeholder="Ej: 10"
+              className="block w-full rounded-lg border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 transition-colors"
             />
           </div>
           <div>
-            <label htmlFor="capacidadMax" className="block text-sm font-medium text-gray-700">
-              Capacidad máxima
+            <label htmlFor="capacidadMax" className="block text-sm font-medium text-gray-700 mb-2">
+              Capacidad Máxima
             </label>
             <input
               type="number"
@@ -125,12 +133,13 @@ export default function EspaciosPage() {
               name="capacidadMax"
               value={filtros.capacidadMax || ''}
               onChange={handleFiltroChange}
-              className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
+              placeholder="Ej: 50"
+              className="block w-full rounded-lg border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 transition-colors"
             />
           </div>
           <div>
-            <label htmlFor="nombre" className="block text-sm font-medium text-gray-700">
-              Nombre
+            <label htmlFor="nombre" className="block text-sm font-medium text-gray-700 mb-2">
+              Nombre del Espacio
             </label>
             <input
               type="text"
@@ -138,8 +147,8 @@ export default function EspaciosPage() {
               name="nombre"
               value={filtros.nombre}
               onChange={handleFiltroChange}
-              placeholder="Buscar por nombre"
-              className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
+              placeholder="Buscar por nombre..."
+              className="block w-full rounded-lg border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 transition-colors"
             />
           </div>
         </div>
@@ -151,41 +160,54 @@ export default function EspaciosPage() {
       ) : error ? (
         <div className="text-center py-12 text-red-600">{error.message}</div>
       ) : (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {espacios.map((espacio: Espacio) => (
-            <div key={espacio.id} className="bg-white overflow-hidden shadow rounded-lg">
+            <div key={espacio.id} className="bg-white overflow-hidden shadow-lg rounded-xl border border-gray-100 hover:shadow-xl transition-shadow duration-300">
               <div className="p-6">
-                <h3 className="text-lg font-medium text-gray-900 mb-2">
-                  {espacio.nombre}
-                </h3>
-                <p className="text-sm text-gray-600 mb-2">
-                  Tipo: {espacio.tipo}
-                </p>
-                <p className="text-sm text-gray-600 mb-2">
-                  Capacidad: {espacio.capacidad} personas
-                </p>
-                <p className="text-sm text-gray-600 mb-4">
-                  {espacio.descripcion}
-                </p>
-                <div className="flex justify-between">
+                <div className="flex items-center mb-4">
+                  <div className="w-12 h-12 bg-indigo-100 rounded-lg flex items-center justify-center mr-4">
+                    <span className="text-2xl">🏢</span>
+                  </div>
+                  <div>
+                    <h3 className="text-xl font-semibold text-gray-900">
+                      {espacio.nombre}
+                    </h3>
+                    <p className="text-sm text-indigo-600 font-medium capitalize">
+                      {espacio.tipo}
+                    </p>
+                  </div>
+                </div>
+                <div className="space-y-2 mb-6">
+                  <div className="flex items-center text-gray-600">
+                    <span className="mr-2">👥</span>
+                    <span className="text-sm">Capacidad: {espacio.capacidad} personas</span>
+                  </div>
+                  <p className="text-sm text-gray-600 leading-relaxed">
+                    {espacio.descripcion}
+                  </p>
+                </div>
+                <div className="flex justify-between items-center">
                   <button
                     onClick={() => handleReservar(espacio.id)}
-                    className="bg-green-600 hover:bg-green-700 text-white px-3 py-1 rounded text-sm"
+                    className="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors duration-200 flex items-center"
                   >
+                    <span className="mr-1">📅</span>
                     Reservar
                   </button>
                   {isAdmin && (
-                    <div className="space-x-2">
+                    <div className="flex space-x-2">
                       <button
                         onClick={() => handleEditar(espacio)}
-                        className="bg-yellow-600 hover:bg-yellow-700 text-white px-3 py-1 rounded text-sm"
+                        className="bg-blue-500 hover:bg-blue-600 text-white px-3 py-2 rounded-lg text-sm font-medium transition-colors duration-200 flex items-center"
                       >
+                        <span className="mr-1">✏️</span>
                         Editar
                       </button>
                       <button
                         onClick={() => handleEliminar(espacio.id)}
-                        className="bg-red-600 hover:bg-red-700 text-white px-3 py-1 rounded text-sm"
+                        className="bg-red-500 hover:bg-red-600 text-white px-3 py-2 rounded-lg text-sm font-medium transition-colors duration-200 flex items-center"
                       >
+                        <span className="mr-1">🗑️</span>
                         Eliminar
                       </button>
                     </div>
