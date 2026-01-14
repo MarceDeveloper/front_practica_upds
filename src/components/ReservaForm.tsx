@@ -5,11 +5,21 @@ import { useReservas } from '@/hooks/useReservas';
 import { useEspacios } from '@/hooks/useEspacios';
 import { useAuthStore } from '@/stores/auth.store';
 import { CrearReservaDto } from '@/types';
+import { CheckCircle, AlertCircle } from 'lucide-react';
 
 interface ReservaFormProps {
   espacioId?: string;
   onClose: () => void;
 }
+
+const formatLocalDateTime = (date: Date): string => {
+  const year = date.getFullYear();
+  const month = String(date.getMonth() + 1).padStart(2, '0');
+  const day = String(date.getDate()).padStart(2, '0');
+  const hours = String(date.getHours()).padStart(2, '0');
+  const minutes = String(date.getMinutes()).padStart(2, '0');
+  return `${year}-${month}-${day}T${hours}:${minutes}`;
+};
 
 export const ReservaForm = ({ espacioId, onClose }: ReservaFormProps) => {
   const { usuario } = useAuthStore();
@@ -19,6 +29,10 @@ export const ReservaForm = ({ espacioId, onClose }: ReservaFormProps) => {
     fechaInicio: new Date(),
     fechaFin: new Date(),
   });
+  const [fechaInicioStr, setFechaInicioStr] = useState('');
+  const [fechaFinStr, setFechaFinStr] = useState('');
+  const [successMessage, setSuccessMessage] = useState('');
+  const [errorMessage, setErrorMessage] = useState('');
 
   const { espacios } = useEspacios();
   const { crearReserva, isCreating } = useReservas();
@@ -30,12 +44,30 @@ export const ReservaForm = ({ espacioId, onClose }: ReservaFormProps) => {
     if (espacioId) {
       setFormData(prev => ({ ...prev, espacioId }));
     }
+    // Initialize datetime strings in local time
+    const now = new Date();
+    const oneHourLater = new Date(now.getTime() + 60 * 60 * 1000);
+    setFechaInicioStr(formatLocalDateTime(now));
+    setFechaFinStr(formatLocalDateTime(oneHourLater));
   }, [usuario, espacioId]);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    crearReserva(formData);
-    onClose();
+    setErrorMessage('');
+    setSuccessMessage('');
+
+    crearReserva(formData, {
+      onSuccess: () => {
+        setSuccessMessage('Reserva creada exitosamente');
+        setTimeout(() => {
+          onClose();
+        }, 2000);
+      },
+      onError: (error: any) => {
+        const message = error?.response?.data?.message || error?.message || 'Error al crear la reserva';
+        setErrorMessage(message);
+      }
+    });
   };
 
   const handleEspacioChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
@@ -47,10 +79,15 @@ export const ReservaForm = ({ espacioId, onClose }: ReservaFormProps) => {
 
   const handleFechaChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
-    setFormData(prev => ({
-      ...prev,
-      [name]: new Date(value),
-    }));
+    const date = new Date(value);
+
+    if (name === 'fechaInicio') {
+      setFechaInicioStr(value);
+      setFormData(prev => ({ ...prev, fechaInicio: date }));
+    } else if (name === 'fechaFin') {
+      setFechaFinStr(value);
+      setFormData(prev => ({ ...prev, fechaFin: date }));
+    }
   };
 
   return (
@@ -61,6 +98,19 @@ export const ReservaForm = ({ espacioId, onClose }: ReservaFormProps) => {
         </div>
 
         <form onSubmit={handleSubmit} className="p-6">
+          {successMessage && (
+            <div className="mb-4 flex items-center p-4 bg-green-50 border border-green-200 rounded-xl">
+              <CheckCircle className="w-5 h-5 text-green-600 mr-3" />
+              <span className="text-green-800 font-medium">{successMessage}</span>
+            </div>
+          )}
+
+          {errorMessage && (
+            <div className="mb-4 flex items-center p-4 bg-red-50 border border-red-200 rounded-xl">
+              <AlertCircle className="w-5 h-5 text-red-600 mr-3" />
+              <span className="text-red-800 font-medium">{errorMessage}</span>
+            </div>
+          )}
           {!espacioId && (
             <div className="mb-4">
               <label className="block text-gray-700 mb-2">Espacio</label>
@@ -85,7 +135,7 @@ export const ReservaForm = ({ espacioId, onClose }: ReservaFormProps) => {
             <input
               type="datetime-local"
               name="fechaInicio"
-              value={formData.fechaInicio.toISOString().slice(0, 16)}
+              value={fechaInicioStr}
               onChange={handleFechaChange}
               className="w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:border-blue-500"
               required
@@ -97,7 +147,7 @@ export const ReservaForm = ({ espacioId, onClose }: ReservaFormProps) => {
             <input
               type="datetime-local"
               name="fechaFin"
-              value={formData.fechaFin.toISOString().slice(0, 16)}
+              value={fechaFinStr}
               onChange={handleFechaChange}
               className="w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:border-blue-500"
               required
@@ -115,9 +165,16 @@ export const ReservaForm = ({ espacioId, onClose }: ReservaFormProps) => {
             <button
               type="submit"
               disabled={isCreating}
-              className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 disabled:opacity-50"
+              className="px-6 py-3 bg-gradient-to-r from-blue-500 to-indigo-500 hover:from-blue-600 hover:to-indigo-600 text-white rounded-xl font-semibold transition-all duration-200 shadow-lg hover:shadow-xl disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center"
             >
-              {isCreating ? 'Creando...' : 'Crear Reserva'}
+              {isCreating ? (
+                <>
+                  <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white mr-2"></div>
+                  Creando...
+                </>
+              ) : (
+                'Crear Reserva'
+              )}
             </button>
           </div>
         </form>
