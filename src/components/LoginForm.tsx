@@ -2,8 +2,10 @@
 
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
+import Link from 'next/link';
 import { useAuth } from '@/hooks/useAuth';
 import { IniciarSesionDto } from '@/types';
+import { Mail, Lock as LockIcon } from 'lucide-react';
 
 export const LoginForm = () => {
   const [credenciales, setCredenciales] = useState<IniciarSesionDto>({
@@ -33,48 +35,52 @@ export const LoginForm = () => {
   };
 
   return (
-    <div className="max-w-md mx-auto mt-8">
-      <form onSubmit={handleSubmit} className="bg-white p-6 rounded-lg shadow-md">
-        <h2 className="text-2xl font-bold mb-6 text-center">Iniciar Sesión</h2>
+    <form onSubmit={handleSubmit} className="space-y-6">
+      {loginError && (
+        <div className="p-4 bg-red-500/20 backdrop-blur-md border border-red-500/30 text-red-200 rounded-lg">
+          Error al iniciar sesión. Verifica tus credenciales.
+        </div>
+      )}
 
-        {loginError && (
-          <div className="mb-4 p-3 bg-red-100 text-red-700 rounded">
-            Error al iniciar sesión
-          </div>
-        )}
-
-        <div className="mb-4">
-          <label className="block text-gray-700 mb-2">Email</label>
+      <div>
+        <label className="block text-white text-sm font-medium mb-2">Email</label>
+        <div className="relative">
           <input
             type="email"
             name="email"
             value={credenciales.email}
             onChange={handleChange}
-            className="w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:border-blue-500"
+            className="w-full pl-10 pr-3 py-3 bg-white/20 border border-white/30 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 text-white placeholder-white/70"
+            placeholder="tu@email.com"
             required
           />
+          <Mail className="absolute left-3 top-3.5 h-5 w-5 text-white/70" />
         </div>
+      </div>
 
-        <div className="mb-6">
-          <label className="block text-gray-700 mb-2">Contraseña</label>
+      <div>
+        <label className="block text-white text-sm font-medium mb-2">Contraseña</label>
+        <div className="relative">
           <input
             type="password"
             name="contrasena"
             value={credenciales.contrasena}
             onChange={handleChange}
-            className="w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:border-blue-500"
+            className="w-full pl-10 pr-3 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
+            placeholder="••••••••"
             required
           />
+          <LockIcon className="absolute left-3 top-3.5 h-5 w-5 text-white/70" />
         </div>
+      </div>
 
-        <button
-          type="submit"
-          disabled={isLoadingLogin}
-          className="w-full bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600 disabled:opacity-50"
-        >
-          {isLoadingLogin ? 'Iniciando...' : 'Iniciar Sesión'}
-        </button>
-      </form>
-    </div>
+      <button
+        type="submit"
+        disabled={isLoadingLogin}
+        className="w-full bg-white/20 backdrop-blur-md border border-white/30 text-white py-3 px-4 rounded-lg hover:bg-white/30 transition-all duration-200 transform hover:scale-105 disabled:opacity-50 disabled:transform-none font-medium"
+      >
+        {isLoadingLogin ? 'Iniciando...' : 'Iniciar Sesión'}
+      </button>
+    </form>
   );
 };

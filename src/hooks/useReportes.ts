@@ -4,19 +4,19 @@ import { ReportesRepository } from '@/repositories/reportes.repository';
 const reportesRepository = new ReportesRepository();
 
 export const useReportes = (fechaInicio?: Date, fechaFin?: Date) => {
-  const { data: reporteReservas, isLoading: isLoadingReservas } = useQuery({
+  const { data: reporteReservas, isLoading: isLoadingReservas, refetch: refetchReservas } = useQuery({
     queryKey: ['reporte-reservas', fechaInicio, fechaFin],
     queryFn: () => reportesRepository.obtenerReservas(fechaInicio, fechaFin),
     enabled: false, // Solo se ejecuta manualmente
   });
 
-  const { data: reporteEspacios, isLoading: isLoadingEspacios } = useQuery({
+  const { data: reporteEspacios, isLoading: isLoadingEspacios, refetch: refetchEspacios } = useQuery({
     queryKey: ['reporte-espacios', fechaInicio, fechaFin],
     queryFn: () => reportesRepository.obtenerEspaciosMasReservados(fechaInicio, fechaFin),
     enabled: false,
   });
 
-  const { data: reporteUso, isLoading: isLoadingUso } = useQuery({
+  const { data: reporteUso, isLoading: isLoadingUso, refetch: refetchUso } = useQuery({
     queryKey: ['reporte-uso', fechaInicio, fechaFin],
     queryFn: () => reportesRepository.obtenerUsoPorTipo(fechaInicio, fechaFin),
     enabled: false,
@@ -31,19 +31,19 @@ export const useReportes = (fechaInicio?: Date, fechaFin?: Date) => {
   });
 
   const generarReporteReservas = () => {
-    // Trigger manual
+    refetchReservas();
   };
 
   const generarReporteEspacios = () => {
-    // Trigger manual
+    refetchEspacios();
   };
 
   const generarReporteUso = () => {
-    // Trigger manual
+    refetchUso();
   };
 
-  const exportarReporte = (formato: 'pdf' | 'excel') => {
-    exportarMutation.mutate({ formato, fechaInicio, fechaFin });
+  const exportarReporte = (formato: 'pdf' | 'excel', options?: any) => {
+    exportarMutation.mutate({ formato, fechaInicio, fechaFin }, options);
   };
 
   return {
