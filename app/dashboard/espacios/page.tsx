@@ -74,10 +74,12 @@ export default function EspaciosPage() {
           <div className="flex items-center mb-3">
             <Building className="w-10 h-10 text-indigo-600 mr-4" />
             <h1 className="text-5xl font-bold bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent">
-              Gestión de Espacios
+              {isAdmin ? 'Gestión de Espacios' : 'Espacios Disponibles'}
             </h1>
           </div>
-          <p className="text-gray-600 text-lg ml-14">Administra y reserva espacios disponibles en el sistema</p>
+          <p className="text-gray-600 text-lg ml-14">
+            {isAdmin ? 'Administra y reserva espacios disponibles en el sistema' : 'Explora y reserva espacios disponibles para tus actividades'}
+          </p>
         </div>
         {isAdmin && (
           <button
