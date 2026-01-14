@@ -23,6 +23,6 @@ export class ReservasRepository {
   }
 
   async cancelar(id: string): Promise<void> {
-    await api.patch(`/reservas/${id}/cancelar`);
+    await api.post('/reservas/cancelar', { id });
   }
 }

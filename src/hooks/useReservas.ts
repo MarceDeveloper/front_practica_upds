@@ -1,17 +1,27 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { ReservasRepository } from '@/repositories/reservas.repository';
-import { CrearReservaDto } from '@/types';
+import { CrearReservaDto, Reserva } from '@/types';
 
 const reservasRepository = new ReservasRepository();
 
 export const useReservas = (userId?: string) => {
   const queryClient = useQueryClient();
 
-  const { data: reservas, isLoading, error } = useQuery({
+  const { data: reservasData, isLoading, error } = useQuery({
     queryKey: ['reservas', userId],
-    queryFn: () => userId ? reservasRepository.obtenerPorUsuario(userId) : Promise.resolve([]),
+    queryFn: async () => {
+      if (!userId) return { futuras: [], pasadas: [] };
+      const result = await reservasRepository.obtenerPorUsuario(userId);
+      return result;
+    },
     enabled: !!userId,
+    refetchOnMount: 'always',
   });
+
+  const reservasArray = [
+    ...((reservasData as any)?.futuras || []),
+    ...((reservasData as any)?.pasadas || [])
+  ];
 
   const crearMutation = useMutation({
     mutationFn: (reserva: CrearReservaDto) => reservasRepository.crear(reserva),
@@ -27,11 +37,11 @@ export const useReservas = (userId?: string) => {
     },
   });
 
-  const reservasFuturas = reservas?.filter(r => new Date(r.fechaFin) > new Date()) || [];
-  const reservasPasadas = reservas?.filter(r => new Date(r.fechaFin) <= new Date()) || [];
+  const reservasFuturas = reservasArray.filter(r => new Date(r.fechaFin) > new Date());
+  const reservasPasadas = reservasArray.filter(r => new Date(r.fechaFin) <= new Date());
 
   return {
-    reservas: reservas || [],
+    reservas: reservasArray,
     reservasFuturas,
     reservasPasadas,
     isLoading,
