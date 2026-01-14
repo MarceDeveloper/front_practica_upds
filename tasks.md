@@ -28,9 +28,9 @@
 - [x] Definir tipos TypeScript basados en DTOs del backend
 
 ### 3. Autenticación
-- [ ] Implementar formularios de login/registro
-- [ ] Crear hook useAuth para manejo de sesión
-- [ ] Proteger rutas con middleware
+- [x] Implementar formularios de login/registro
+- [x] Crear hook useAuth para manejo de sesión
+- [x] Proteger rutas con middleware
 
 ### 4. Gestión de Espacios
 - [ ] Página de listado de espacios con filtros
