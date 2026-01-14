@@ -53,12 +53,12 @@
 - [x] Exportar reportes a PDF/Excel
 
 ### 8. UI/UX
-- [ ] Diseño responsivo con Tailwind
-- [ ] Componentes reutilizables (botones, modales, tablas)
-- [ ] Manejo de errores y estados de carga
+- [x] Diseño responsivo con Tailwind
+- [x] Componentes reutilizables (botones, modales, tablas)
+- [x] Manejo de errores y estados de carga
 
 ### 9. Testing
-- [ ] Configurar Jest y React Testing Library
+- [x] Configurar Jest y React Testing Library
 - [ ] Tests unitarios para hooks y servicios
 - [ ] Tests de integración para componentes
 

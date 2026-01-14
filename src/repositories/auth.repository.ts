@@ -4,6 +4,7 @@ import { Usuario, CrearUsuarioDto, IniciarSesionDto } from '@/types';
 export class AuthRepository {
   async iniciarSesion(credenciales: IniciarSesionDto) {
     const response = await api.post('/auth/login', credenciales);
+    console.log('Login response:', response.data);
     return response.data;
   }
 

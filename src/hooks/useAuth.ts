@@ -1,4 +1,5 @@
 import { useMutation, useQuery } from '@tanstack/react-query';
+import { useRouter } from 'next/navigation';
 import { AuthRepository } from '@/repositories/auth.repository';
 import { useAuthStore } from '@/stores/auth.store';
 import { CrearUsuarioDto, IniciarSesionDto } from '@/types';
@@ -12,6 +13,7 @@ export const useAuth = () => {
     mutationFn: (credenciales: IniciarSesionDto) =>
       authRepository.iniciarSesion(credenciales),
     onSuccess: (data) => {
+      console.log('Login success:', data);
       login(data.usuario, data.token);
     },
   });
