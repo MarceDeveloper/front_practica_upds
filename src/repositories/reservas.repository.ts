@@ -25,4 +25,12 @@ export class ReservasRepository {
   async cancelar(id: string): Promise<void> {
     await api.post('/reservas/cancelar', { id });
   }
+
+  async aprobar(id: string): Promise<void> {
+    await api.post('/reservas/aprobar', { reservaId: id });
+  }
+
+  async rechazar(id: string): Promise<void> {
+    await api.post('/reservas/rechazar', { reservaId: id });
+  }
 }

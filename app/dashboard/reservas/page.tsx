@@ -9,7 +9,8 @@ import { Calendar, Clock, MapPin, X, History, CheckCircle, Filter } from 'lucide
 
 export default function ReservasPage() {
   const { usuario } = useAuthStore();
-  const { reservas, isLoading, error, cancelarReserva } = useReservas(usuario?.id);
+  const isAdmin = usuario?.rol === 'administrador';
+  const { reservas, isLoading, error, cancelarReserva, aprobarReserva, rechazarReserva } = useReservas(isAdmin ? undefined : usuario?.id);
   const { espacios } = useEspacios();
   const [filtroEstado, setFiltroEstado] = useState<string>('todas');
 
@@ -30,6 +31,18 @@ export default function ReservasPage() {
     }
   };
 
+  const handleAprobar = (id: string) => {
+    if (confirm('¿Estás seguro de que quieres aprobar esta reserva?')) {
+      aprobarReserva(id);
+    }
+  };
+
+  const handleRechazar = (id: string) => {
+    if (confirm('¿Estás seguro de que quieres rechazar esta reserva?')) {
+      rechazarReserva(id);
+    }
+  };
+
   return (
     <div className="px-4 py-6 sm:px-0">
       <div className="mb-10">
@@ -38,9 +51,11 @@ export default function ReservasPage() {
             <Calendar className="w-10 h-10 text-indigo-600 mr-4" />
             <div>
               <h1 className="text-5xl font-bold bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent">
-                Mis Reservas
+                {isAdmin ? 'Gestionar Reservas' : 'Mis Reservas'}
               </h1>
-              <p className="text-gray-600 text-lg">Gestiona tus reservas activas y revisa tu historial</p>
+              <p className="text-gray-600 text-lg">
+                {isAdmin ? 'Administra todas las reservas del sistema' : 'Gestiona tus reservas activas y revisa tu historial'}
+              </p>
             </div>
           </div>
           <div className="flex items-center bg-white/90 backdrop-blur-lg rounded-2xl p-2 shadow-lg border border-white/40">
@@ -75,7 +90,9 @@ export default function ReservasPage() {
           <div>
             <div className="flex items-center mb-6">
               <Calendar className="w-6 h-6 text-indigo-600 mr-3" />
-              <h2 className="text-3xl font-bold text-gray-900">Todas mis Reservas</h2>
+              <h2 className="text-3xl font-bold text-gray-900">
+                {isAdmin ? 'Todas las Reservas' : 'Todas mis Reservas'}
+              </h2>
             </div>
             {reservasFiltradas.length === 0 ? (
               <div className="bg-white/90 backdrop-blur-lg rounded-2xl p-8 text-center shadow-xl border border-white/40">
@@ -150,13 +167,34 @@ export default function ReservasPage() {
                         </div>
 
                         {isFuture && reserva.estado === 'pendiente' && (
-                          <button
-                            onClick={() => handleCancelar(reserva.id)}
-                            className="w-full bg-gradient-to-r from-red-500 to-pink-500 hover:from-red-600 hover:to-pink-600 text-white py-3 rounded-xl text-sm font-semibold transition-all duration-200 flex items-center justify-center shadow-lg hover:shadow-xl"
-                          >
-                            <X className="w-4 h-4 mr-2" />
-                            Cancelar Reserva
-                          </button>
+                          <div className="space-y-2">
+                            {isAdmin ? (
+                              <div className="flex gap-2">
+                                <button
+                                  onClick={() => handleAprobar(reserva.id)}
+                                  className="flex-1 bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 text-white py-3 rounded-xl text-sm font-semibold transition-all duration-200 flex items-center justify-center shadow-lg hover:shadow-xl"
+                                >
+                                  <CheckCircle className="w-4 h-4 mr-2" />
+                                  Aprobar
+                                </button>
+                                <button
+                                  onClick={() => handleRechazar(reserva.id)}
+                                  className="flex-1 bg-gradient-to-r from-red-500 to-pink-500 hover:from-red-600 hover:to-pink-600 text-white py-3 rounded-xl text-sm font-semibold transition-all duration-200 flex items-center justify-center shadow-lg hover:shadow-xl"
+                                >
+                                  <X className="w-4 h-4 mr-2" />
+                                  Rechazar
+                                </button>
+                              </div>
+                            ) : (
+                              <button
+                                onClick={() => handleCancelar(reserva.id)}
+                                className="w-full bg-gradient-to-r from-red-500 to-pink-500 hover:from-red-600 hover:to-pink-600 text-white py-3 rounded-xl text-sm font-semibold transition-all duration-200 flex items-center justify-center shadow-lg hover:shadow-xl"
+                              >
+                                <X className="w-4 h-4 mr-2" />
+                                Cancelar Reserva
+                              </button>
+                            )}
+                          </div>
                         )}
                       </div>
                     </div>
