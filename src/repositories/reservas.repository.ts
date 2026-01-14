@@ -7,8 +7,8 @@ export class ReservasRepository {
     return response.data;
   }
 
-  async obtenerPorUsuario(): Promise<Reserva[]> {
-    const response = await api.get('/reservas/usuario');
+  async obtenerPorUsuario(userId: string): Promise<Reserva[]> {
+    const response = await api.get(`/reservas/usuario/${userId}`);
     return response.data;
   }
 

@@ -2,11 +2,13 @@
 
 import { useReservas } from '@/hooks/useReservas';
 import { useEspacios } from '@/hooks/useEspacios';
+import { useAuthStore } from '@/stores/auth.store';
 import { Reserva, Espacio } from '@/types';
 import { Calendar, Clock, MapPin, X, History, CheckCircle } from 'lucide-react';
 
 export default function ReservasPage() {
-  const { reservasFuturas, reservasPasadas, isLoading, error, cancelarReserva } = useReservas();
+  const { usuario } = useAuthStore();
+  const { reservasFuturas, reservasPasadas, isLoading, error, cancelarReserva } = useReservas(usuario?.id);
   const { espacios } = useEspacios();
 
   const getEspacioNombre = (espacioId: string) => {

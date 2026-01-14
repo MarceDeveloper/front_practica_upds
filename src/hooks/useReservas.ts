@@ -4,12 +4,13 @@ import { CrearReservaDto } from '@/types';
 
 const reservasRepository = new ReservasRepository();
 
-export const useReservas = () => {
+export const useReservas = (userId?: string) => {
   const queryClient = useQueryClient();
 
   const { data: reservas, isLoading, error } = useQuery({
-    queryKey: ['reservas'],
-    queryFn: () => reservasRepository.obtenerPorUsuario(),
+    queryKey: ['reservas', userId],
+    queryFn: () => userId ? reservasRepository.obtenerPorUsuario(userId) : Promise.resolve([]),
+    enabled: !!userId,
   });
 
   const crearMutation = useMutation({
