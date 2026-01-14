@@ -1,5 +1,5 @@
 import api from '@/lib/axios';
-import { Usuario, CrearUsuarioDto, IniciarSesionDto } from '@/types';
+import { Usuario, CrearUsuarioDto, IniciarSesionDto, CambiarContrasenaDto } from '@/types';
 
 export class AuthRepository {
   async iniciarSesion(credenciales: IniciarSesionDto) {
@@ -16,5 +16,9 @@ export class AuthRepository {
   async obtenerPerfil(): Promise<Usuario> {
     const response = await api.get('/auth/profile');
     return response.data;
+  }
+
+  async cambiarContrasena(data: CambiarContrasenaDto): Promise<void> {
+    await api.put('/auth/change-password', data);
   }
 }

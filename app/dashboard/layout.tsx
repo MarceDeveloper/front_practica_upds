@@ -62,6 +62,13 @@ export default function DashboardLayout({
                 <Calendar className="w-5 h-5 mr-3 group-hover:scale-110 transition-transform" />
                 <span className="font-medium">Mis Reservas</span>
               </Link>
+              <Link
+                href="/dashboard/perfil"
+                className="flex items-center px-4 py-3 text-gray-700 hover:bg-gradient-to-r hover:from-indigo-50 hover:to-purple-50 hover:text-indigo-700 rounded-xl transition-all duration-200 group"
+              >
+                <User className="w-5 h-5 mr-3 group-hover:scale-110 transition-transform" />
+                <span className="font-medium">Mi Perfil</span>
+              </Link>
               {isAdmin && (
                 <>
                   <Link

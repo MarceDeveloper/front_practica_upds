@@ -2,7 +2,7 @@ import { useMutation, useQuery } from '@tanstack/react-query';
 import { useRouter } from 'next/navigation';
 import { AuthRepository } from '@/repositories/auth.repository';
 import { useAuthStore } from '@/stores/auth.store';
-import { CrearUsuarioDto, IniciarSesionDto } from '@/types';
+import { CrearUsuarioDto, IniciarSesionDto, CambiarContrasenaDto } from '@/types';
 
 const authRepository = new AuthRepository();
 
@@ -26,6 +26,11 @@ export const useAuth = () => {
     },
   });
 
+  const changePasswordMutation = useMutation({
+    mutationFn: (data: CambiarContrasenaDto) =>
+      authRepository.cambiarContrasena(data),
+  });
+
   const { data: perfil } = useQuery({
     queryKey: ['perfil'],
     queryFn: () => authRepository.obtenerPerfil(),
@@ -42,10 +47,13 @@ export const useAuth = () => {
     isAuthenticated,
     login: loginMutation.mutate,
     register: registerMutation.mutate,
+    changePassword: changePasswordMutation.mutate,
     logout: handleLogout,
     isLoadingLogin: loginMutation.isPending,
     isLoadingRegister: registerMutation.isPending,
+    isLoadingChangePassword: changePasswordMutation.isPending,
     loginError: loginMutation.error,
     registerError: registerMutation.error,
+    changePasswordError: changePasswordMutation.error,
   };
 };
