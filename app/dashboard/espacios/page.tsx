@@ -7,6 +7,7 @@ import { useAuthStore } from '@/stores/auth.store';
 import { EspacioForm } from '@/components/EspacioForm';
 import { ReservaForm } from '@/components/ReservaForm';
 import { Modal } from '@/components/ui/Modal';
+import { Plus, Search, Users, MapPin, Calendar, Edit, Trash2, Building } from 'lucide-react';
 
 export default function EspaciosPage() {
   const { usuario } = useAuthStore();
@@ -68,26 +69,31 @@ export default function EspaciosPage() {
 
   return (
     <div className="px-4 py-6 sm:px-0">
-      <div className="flex justify-between items-center mb-8">
+      <div className="flex justify-between items-center mb-10">
         <div>
-          <h1 className="text-4xl font-bold text-gray-900 mb-2">Gestión de Espacios</h1>
-          <p className="text-gray-600">Administra y reserva espacios disponibles en el sistema</p>
+          <div className="flex items-center mb-3">
+            <Building className="w-10 h-10 text-indigo-600 mr-4" />
+            <h1 className="text-5xl font-bold bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent">
+              Gestión de Espacios
+            </h1>
+          </div>
+          <p className="text-gray-600 text-lg ml-14">Administra y reserva espacios disponibles en el sistema</p>
         </div>
         {isAdmin && (
           <button
             onClick={handleCrear}
-            className="bg-indigo-600 hover:bg-indigo-700 text-white px-6 py-3 rounded-lg font-medium shadow-lg hover:shadow-xl transition-all duration-200 flex items-center"
+            className="bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 text-white px-8 py-4 rounded-2xl font-semibold shadow-2xl hover:shadow-3xl transition-all duration-300 flex items-center transform hover:scale-105"
           >
-            <span className="mr-2">➕</span>
+            <Plus className="w-5 h-5 mr-3" />
             Crear Nuevo Espacio
           </button>
         )}
       </div>
 
       {/* Filtros */}
-      <div className="bg-white shadow-lg rounded-xl p-6 mb-8 border border-gray-100">
-        <h2 className="text-xl font-semibold text-gray-900 mb-6 flex items-center">
-          <span className="mr-2">🔍</span>
+      <div className="bg-white/80 backdrop-blur-lg shadow-2xl rounded-3xl p-8 mb-10 border border-white/20">
+        <h2 className="text-2xl font-bold text-gray-900 mb-8 flex items-center">
+          <Search className="w-6 h-6 mr-3 text-indigo-600" />
           Filtros de Búsqueda
         </h2>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
@@ -162,52 +168,56 @@ export default function EspaciosPage() {
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {espacios.map((espacio: Espacio) => (
-            <div key={espacio.id} className="bg-white overflow-hidden shadow-lg rounded-xl border border-gray-100 hover:shadow-xl transition-shadow duration-300">
+            <div key={espacio.id} className="bg-white/95 backdrop-blur-lg overflow-hidden shadow-xl rounded-2xl border border-white/40 hover:shadow-2xl hover:scale-[1.02] transition-all duration-300 group">
               <div className="p-6">
-                <div className="flex items-center mb-4">
-                  <div className="w-12 h-12 bg-indigo-100 rounded-lg flex items-center justify-center mr-4">
-                    <span className="text-2xl">🏢</span>
+                <div className="flex items-start justify-between mb-4">
+                  <div className="flex items-center">
+                    <div className="w-12 h-12 bg-gradient-to-r from-indigo-500 to-purple-500 rounded-xl flex items-center justify-center mr-4 shadow-md">
+                      <Building className="w-6 h-6 text-white" />
+                    </div>
+                    <div>
+                      <h3 className="text-lg font-bold text-gray-900 group-hover:text-indigo-600 transition-colors line-clamp-1">
+                        {espacio.nombre}
+                      </h3>
+                      <p className="text-xs text-indigo-600 font-medium capitalize bg-indigo-50 px-2 py-1 rounded-lg inline-block mt-1">
+                        {espacio.tipo}
+                      </p>
+                    </div>
                   </div>
-                  <div>
-                    <h3 className="text-xl font-semibold text-gray-900">
-                      {espacio.nombre}
-                    </h3>
-                    <p className="text-sm text-indigo-600 font-medium capitalize">
-                      {espacio.tipo}
-                    </p>
+                  <div className="flex items-center text-gray-600 bg-gray-50 px-3 py-2 rounded-lg">
+                    <Users className="w-4 h-4 mr-1" />
+                    <span className="text-sm font-medium">{espacio.capacidad}</span>
                   </div>
                 </div>
-                <div className="space-y-2 mb-6">
-                  <div className="flex items-center text-gray-600">
-                    <span className="mr-2">👥</span>
-                    <span className="text-sm">Capacidad: {espacio.capacidad} personas</span>
-                  </div>
-                  <p className="text-sm text-gray-600 leading-relaxed">
+
+                <div className="mb-5">
+                  <p className="text-sm text-gray-600 leading-relaxed line-clamp-2">
                     {espacio.descripcion}
                   </p>
                 </div>
-                <div className="flex justify-between items-center">
+
+                <div className="flex flex-col space-y-3">
                   <button
                     onClick={() => handleReservar(espacio.id)}
-                    className="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors duration-200 flex items-center"
+                    className="w-full bg-gradient-to-r from-green-500 to-emerald-500 hover:from-green-600 hover:to-emerald-600 text-white py-2.5 rounded-xl text-sm font-semibold transition-all duration-200 flex items-center justify-center shadow-md hover:shadow-lg"
                   >
-                    <span className="mr-1">📅</span>
-                    Reservar
+                    <Calendar className="w-4 h-4 mr-2" />
+                    Reservar Espacio
                   </button>
                   {isAdmin && (
-                    <div className="flex space-x-2">
+                    <div className="grid grid-cols-2 gap-2">
                       <button
                         onClick={() => handleEditar(espacio)}
-                        className="bg-blue-500 hover:bg-blue-600 text-white px-3 py-2 rounded-lg text-sm font-medium transition-colors duration-200 flex items-center"
+                        className="bg-gradient-to-r from-blue-500 to-indigo-500 hover:from-blue-600 hover:to-indigo-600 text-white py-2 rounded-lg text-xs font-medium transition-all duration-200 flex items-center justify-center shadow-sm hover:shadow-md"
                       >
-                        <span className="mr-1">✏️</span>
+                        <Edit className="w-3 h-3 mr-1" />
                         Editar
                       </button>
                       <button
                         onClick={() => handleEliminar(espacio.id)}
-                        className="bg-red-500 hover:bg-red-600 text-white px-3 py-2 rounded-lg text-sm font-medium transition-colors duration-200 flex items-center"
+                        className="bg-gradient-to-r from-red-500 to-pink-500 hover:from-red-600 hover:to-pink-600 text-white py-2 rounded-lg text-xs font-medium transition-all duration-200 flex items-center justify-center shadow-sm hover:shadow-md"
                       >
-                        <span className="mr-1">🗑️</span>
+                        <Trash2 className="w-3 h-3 mr-1" />
                         Eliminar
                       </button>
                     </div>
