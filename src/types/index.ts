@@ -62,6 +62,12 @@ export interface FiltrosEspacio {
   nombre?: string;
 }
 
+export interface EditarUsuarioDto {
+  nombre?: string;
+  email?: string;
+  rol?: 'miembro' | 'administrador';
+}
+
 export interface CambiarContrasenaDto {
   contrasenaActual: string;
   nuevaContrasena: string;

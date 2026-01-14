@@ -38,9 +38,9 @@
 - [x] Funcionalidad de eliminación de espacios
 
 ### 5. Gestión de Reservas
-- [ ] Página de reservas del usuario (historial y futuras)
-- [ ] Formulario de nueva reserva
-- [ ] Funcionalidad de cancelar reserva
+- [x] Página de reservas del usuario (historial y futuras)
+- [x] Formulario de nueva reserva
+- [x] Funcionalidad de cancelar reserva
 
 ### 6. Gestión de Usuarios (Admin)
 - [ ] Página de listado de usuarios
