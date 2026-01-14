@@ -33,9 +33,9 @@
 - [x] Proteger rutas con middleware
 
 ### 4. Gestión de Espacios
-- [ ] Página de listado de espacios con filtros
-- [ ] Formulario de creación/edición de espacios
-- [ ] Funcionalidad de eliminación de espacios
+- [x] Página de listado de espacios con filtros
+- [x] Formulario de creación/edición de espacios
+- [x] Funcionalidad de eliminación de espacios
 
 ### 5. Gestión de Reservas
 - [ ] Página de reservas del usuario (historial y futuras)
