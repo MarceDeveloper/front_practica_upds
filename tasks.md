@@ -24,8 +24,8 @@
 - [x] Configurar store de Zustand para autenticación
 
 ### 2. Estructura de Carpetas
-- [ ] Crear estructura de carpetas (components, pages, services, hooks, stores, types)
-- [ ] Definir tipos TypeScript basados en DTOs del backend
+- [x] Crear estructura de carpetas (components, pages, services, hooks, stores, types)
+- [x] Definir tipos TypeScript basados en DTOs del backend
 
 ### 3. Autenticación
 - [ ] Implementar formularios de login/registro
