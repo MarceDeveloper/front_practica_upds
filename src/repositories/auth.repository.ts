@@ -19,6 +19,6 @@ export class AuthRepository {
   }
 
   async cambiarContrasena(data: CambiarContrasenaDto): Promise<void> {
-    await api.put('/auth/change-password', data);
+    await api.post('/auth/change-password', data);
   }
 }
