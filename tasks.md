@@ -18,10 +18,10 @@
 ## Tareas Pendientes
 
 ### 1. Configuración Inicial
-- [ ] Instalar dependencias adicionales (axios, @tanstack/react-query, zustand)
-- [ ] Configurar Axios con URL base del backend
-- [ ] Configurar proveedor de TanStack Query
-- [ ] Configurar store de Zustand para autenticación
+- [x] Instalar dependencias adicionales (axios, @tanstack/react-query, zustand)
+- [x] Configurar Axios con URL base del backend
+- [x] Configurar proveedor de TanStack Query
+- [x] Configurar store de Zustand para autenticación
 
 ### 2. Estructura de Carpetas
 - [ ] Crear estructura de carpetas (components, pages, services, hooks, stores, types)
