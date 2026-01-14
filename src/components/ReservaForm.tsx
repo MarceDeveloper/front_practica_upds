@@ -1,22 +1,36 @@
-import { useState } from 'react';
+'use client';
+
+import { useState, useEffect } from 'react';
 import { useReservas } from '@/hooks/useReservas';
 import { useEspacios } from '@/hooks/useEspacios';
+import { useAuthStore } from '@/stores/auth.store';
 import { CrearReservaDto } from '@/types';
 
 interface ReservaFormProps {
+  espacioId?: string;
   onClose: () => void;
 }
 
-export const ReservaForm = ({ onClose }: ReservaFormProps) => {
+export const ReservaForm = ({ espacioId, onClose }: ReservaFormProps) => {
+  const { usuario } = useAuthStore();
   const [formData, setFormData] = useState<CrearReservaDto>({
-    usuarioId: '',
-    espacioId: '',
+    usuarioId: usuario?.id || '',
+    espacioId: espacioId || '',
     fechaInicio: new Date(),
     fechaFin: new Date(),
   });
 
   const { espacios } = useEspacios();
   const { crearReserva, isCreating } = useReservas();
+
+  useEffect(() => {
+    if (usuario) {
+      setFormData(prev => ({ ...prev, usuarioId: usuario.id }));
+    }
+    if (espacioId) {
+      setFormData(prev => ({ ...prev, espacioId }));
+    }
+  }, [usuario, espacioId]);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -47,22 +61,24 @@ export const ReservaForm = ({ onClose }: ReservaFormProps) => {
         </div>
 
         <form onSubmit={handleSubmit} className="p-6">
-          <div className="mb-4">
-            <label className="block text-gray-700 mb-2">Espacio</label>
-            <select
-              value={formData.espacioId}
-              onChange={handleEspacioChange}
-              className="w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:border-blue-500"
-              required
-            >
-              <option value="">Seleccionar espacio</option>
-              {espacios.map((espacio) => (
-                <option key={espacio.id} value={espacio.id}>
-                  {espacio.nombre} - {espacio.tipo} (Capacidad: {espacio.capacidad})
-                </option>
-              ))}
-            </select>
-          </div>
+          {!espacioId && (
+            <div className="mb-4">
+              <label className="block text-gray-700 mb-2">Espacio</label>
+              <select
+                value={formData.espacioId}
+                onChange={handleEspacioChange}
+                className="w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:border-blue-500"
+                required
+              >
+                <option value="">Seleccionar espacio</option>
+                {espacios.map((espacio) => (
+                  <option key={espacio.id} value={espacio.id}>
+                    {espacio.nombre} - {espacio.tipo} (Capacidad: {espacio.capacidad})
+                  </option>
+                ))}
+              </select>
+            </div>
+          )}
 
           <div className="mb-4">
             <label className="block text-gray-700 mb-2">Fecha y Hora de Inicio</label>

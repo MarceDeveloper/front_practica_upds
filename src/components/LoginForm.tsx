@@ -1,4 +1,7 @@
-import { useState } from 'react';
+'use client';
+
+import { useState, useEffect } from 'react';
+import { useRouter } from 'next/navigation';
 import { useAuth } from '@/hooks/useAuth';
 import { IniciarSesionDto } from '@/types';
 
@@ -8,7 +11,14 @@ export const LoginForm = () => {
     contrasena: '',
   });
 
-  const { login, isLoadingLogin, loginError } = useAuth();
+  const router = useRouter();
+  const { login, isLoadingLogin, loginError, isAuthenticated } = useAuth();
+
+  useEffect(() => {
+    if (isAuthenticated) {
+      router.push('/dashboard');
+    }
+  }, [isAuthenticated, router]);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();

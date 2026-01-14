@@ -1,3 +1,5 @@
+'use client';
+
 import { useState, useEffect } from 'react';
 import { useUsuarios } from '@/hooks/useUsuarios';
 import { CrearUsuarioDto, EditarUsuarioDto, Usuario } from '@/types';

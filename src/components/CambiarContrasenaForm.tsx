@@ -1,3 +1,5 @@
+'use client';
+
 import { useState } from 'react';
 import { useUsuarios } from '@/hooks/useUsuarios';
 import { CambiarContrasenaDto } from '@/types';

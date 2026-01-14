@@ -1,3 +1,5 @@
+'use client';
+
 import { useState } from 'react';
 import { useEspacios } from '@/hooks/useEspacios';
 import { FiltrosEspacio } from '@/types';

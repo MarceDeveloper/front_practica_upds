@@ -1,3 +1,5 @@
+'use client';
+
 import { useState, useEffect } from 'react';
 import { useEspacios } from '@/hooks/useEspacios';
 import { CrearEspacioDto, EditarEspacioDto, Espacio } from '@/types';
